@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const start = async() => {
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
       container: document.body,
-      imageTargetSrc: '../assets/targets/course-banner.mind',
+      imageTargetSrc: './assets/targets/course-banner.mind',
     });
     const {renderer, cssRenderer, scene, cssScene, camera} = mindarThree;
 
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	
 	const anchor = mindarThree.addAnchor(0); 	
-	const audioClip = await loadAudio('../assets/sounds/musicband-background.mp3');
+	const audioClip = await loadAudio('./assets/sounds/musicband-background.mp3');
     const listener = new THREE.AudioListener();
     camera.add(listener);
 
