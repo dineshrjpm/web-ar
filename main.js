@@ -1,16 +1,43 @@
 import { CSS3DObject } from './libs/renderer/CSS3DRenderer.js';
-import {loadGLTF, loadAudio} from "./libs/loader/loader.js";
+import {loadGLTF, loadAudio,loadVideo} from "./libs/loader/loader.js";
 const THREE = window.MINDAR.IMAGE.THREE;
 
 document.addEventListener('DOMContentLoaded', () => {
   const start = async() => {
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
       container: document.body,
-      imageTargetSrc: './assets/targets/course-banner.mind',
+      imageTargetSrc: './assets/targets/Nissan.mind',
     });
     const {renderer, cssRenderer, scene, cssScene, camera} = mindarThree;
 
-    const obj = new CSS3DObject(document.querySelector("#ar-div"));
+
+    //Load video
+    for(var i=0;i<5;i++)
+    {
+    const video = await loadVideo("./assets/CarVideo/Demo"+i+".mp4");
+    const texture = new THREE.VideoTexture(video);
+
+    const geometry = new THREE.PlaneGeometry(1, 204/480);
+    const material = new THREE.MeshBasicMaterial({map: texture});
+    const plane = new THREE.Mesh(geometry, material);
+
+    const anchor = mindarThree.addAnchor(i);
+    anchor.group.add(plane);
+
+    anchor.onTargetFound = () => {
+      video.play();
+    }
+    anchor.onTargetLost = () => {
+      video.pause();
+    }
+    video.addEventListener( 'play', () => {
+      video.currentTime = 6;
+    });
+    }
+
+
+
+   /* const obj = new CSS3DObject(document.querySelector("#ar-div"));
     const anchor1 = mindarThree.addCSSAnchor(0);
     anchor1.group.add(obj);
 
@@ -24,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     anchor.group.add(audio);
 
     audio.setBuffer(audioClip);
-	audio.setVolume(20);
+	  audio.setVolume(20);
     audio.setRefDistance(100);
     audio.setLoop(false);
 
@@ -33,11 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     anchor.onTargetLost = () => {
       audio.pause();
-    }
+    }*/
 
     await mindarThree.start();
     renderer.setAnimationLoop(() => {
-      cssRenderer.render(cssScene, camera);
+      renderer.render(scene, camera);
     });
   }
   start();
