@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     //Load video
-    for(var i=0;i<2;i++)
+    for(var i=0;i<3;i++)
     {
         const video = await loadVideo("./assets/video/Innovation3/Demo"+i+".mp4");
         const texture = new THREE.VideoTexture(video);
